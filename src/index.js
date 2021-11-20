@@ -55,6 +55,11 @@ app.post('/account', (req, res) => {
   return res.status(201).send({message: 'Account created successfully', data: costumers})
 })
 
+app.get('/costumer', verifyExistsCostumerCpf, (req, res) => {
+  const { costumer } = req;
+  return res.status(200).send({message: 'Costumer found', data: costumer})
+})
+
 app.get('/statement', verifyExistsCostumerCpf, (req, res) => {
   const { costumer } = req;
   return res.status(200).send({message: 'Costumer found', statement: costumer.statement})
@@ -97,6 +102,15 @@ app.post('/movement', verifyExistsCostumerCpf, (req, res) => {
   }
 
   return res.status(400).send({message: 'Error when depositing'})
+})
+
+app.put('/account', verifyExistsCostumerCpf, (req, res) => {
+  const { name } = req.body
+  const { costumer } = req;
+
+  costumer.name = name
+
+  return res.status(200).send({message: 'Costumer updated successfully', data: costumer})
 })
 
 app.listen(PORT)
