@@ -78,7 +78,7 @@ app.get('/statement/date', verifyExistsCostumerCpf, (req, res) => {
     return res.status(200).json({ message: 'Costumer found', data: statement })
   }
 
-  return res.status(404).json({ message: 'Costumer not found'})
+  return res.status(404).json({ message: 'Costumer not found' })
 })
 
 // deposit | withdraw
@@ -127,6 +127,22 @@ app.put('/account', verifyExistsCostumerCpf, (req, res) => {
   costumer.name = name
 
   return res.status(200).send({ message: 'Costumer updated successfully', data: costumer })
+})
+
+app.delete('/account', verifyExistsCostumerCpf, (req, res) => {
+  const { costumer } = req;
+
+  costumers.splice(costumer, 1)
+
+  return res.status(200).json(costumers)
+})
+
+app.get('/balance', verifyExistsCostumerCpf, (req, res) => {
+  const { costumer } = req
+
+  const balance = getBalance(costumer)
+
+  return res.status(200).json({message: 'Total', data: balance})
 })
 
 app.listen(PORT)
